@@ -1,0 +1,5 @@
+org\tharos\App.class
+org\tharos\client\OkHttpClientInstanceHolder$1.class
+org\tharos\client\OkHttpClientInstanceHolder.class
+org\tharos\get\GetCalls.class
+org\tharos\client\DefaultHostnameVerifier.class
