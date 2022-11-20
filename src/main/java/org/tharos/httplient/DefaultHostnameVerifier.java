@@ -1,4 +1,4 @@
-package org.tharos.client;
+package org.tharos.httplient;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLSession;

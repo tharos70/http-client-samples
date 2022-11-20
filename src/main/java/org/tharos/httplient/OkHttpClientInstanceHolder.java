@@ -1,4 +1,4 @@
-package org.tharos.client;
+package org.tharos.httplient;
 
 import java.net.InetSocketAddress;
 import java.net.Proxy;
@@ -25,7 +25,7 @@ public class OkHttpClientInstanceHolder {
     private static OkHttpClient _unsafeInstance = null;
 
     /** The singleton unsafe proxy enabled instance. */
-    private static OkHttpClient _unsafeProxyEnabledInstance = null;
+    private static OkHttpClient _proxyEnabledInstance = null;
 
     /** The Constant LOG. */
     private static final Logger LOG = Logger.getLogger("client.instance");
@@ -113,39 +113,30 @@ public class OkHttpClientInstanceHolder {
      *
      * @return the unsafe proxy enabled if available ok http client
      */
-    public static OkHttpClient getUnsafeProxyEnabledIfAvailableOkHttpClient(final String proxyHost,
+    public static OkHttpClient getProxyEnabledIfAvailableOkHttpClient(final String proxyHost,
             final int proxyPort) {
-        LOG.info("OkHttpClientInstanceHolder:getUnsafeProxyEnabledIfAvailableOkHttpClient - IN");
-        if (_unsafeProxyEnabledInstance == null) {
+        LOG.info("OkHttpClientInstanceHolder:getProxyEnabledIfAvailableOkHttpClient - IN");
+        if (_proxyEnabledInstance == null) {
             try {
-                // Install the all-trusting trust manager
-                final SSLContext sslContext = SSLContext.getInstance("SSL");
-                sslContext.init(null, trustAllCerts, new java.security.SecureRandom());
-                // Create an ssl socket factory with our all-trusting manager
-                final SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
-
                 OkHttpClient.Builder builder = new OkHttpClient.Builder();
-                builder.sslSocketFactory(sslSocketFactory, (X509TrustManager) trustAllCerts[0]);
-                builder.hostnameVerifier(new DefaultHostnameVerifier());
                 try {
                     LOG.info("Building client with proxy");
                     LOG.fine("Proxy Port [" + proxyPort + "]");
                     LOG.fine("Proxy URL [" + proxyHost + "]");
                     Proxy proxyInstance = new Proxy(Proxy.Type.HTTP,
                             new InetSocketAddress(proxyHost, proxyPort));
-                    _unsafeProxyEnabledInstance = builder.proxy(proxyInstance).build();
+                    _proxyEnabledInstance = builder.proxy(proxyInstance).build();
                 } catch (Exception ex) {
                     throw new RuntimeException(
-                            "OkHttpClientInstanceHolder:getUnsafeInstance - cannot build unsafe proxy aware http client instance",
+                            "OkHttpClientInstanceHolder:getProxyEnabledIfAvailableOkHttpClient - cannot build proxy aware http client instance",
                             ex);
                 }
-
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
         }
-        LOG.info("OkHttpClientInstanceHolder:getUnsafeProxyEnabledIfAvailableOkHttpClient - OUT");
-        return _unsafeProxyEnabledInstance;
+        LOG.info("OkHttpClientInstanceHolder:getProxyEnabledIfAvailableOkHttpClient - OUT");
+        return _proxyEnabledInstance;
     }
 
 }

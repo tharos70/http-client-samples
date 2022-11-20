@@ -82,4 +82,39 @@ public class Get {
         }
         LOG.info("GetCalls:simpleGetCallTimeoutAware - OUT");
     }
+
+    /**
+     * Performs a simple unsafe http GET call to the specified url with the
+     * specified query
+     * parameter with a specified timeout expressed in millisecond. When the timeout
+     * occurs the call will be canceled. It is unsafe beacause in case of an https
+     * url call, the certificates chain
+     * will not be checked. It is not a recommended usage, though sometimes it may
+     * be useful for troubleshooting purpose.
+     * 
+     * @param url            The request url
+     * @param queryParameter The query parameter to be added to this request
+     * @param timeout
+     * @return The response body of the input requested url
+     * @throws IOException
+     */
+    public void simpleUnsafeGetCallTimeoutAware(String url, AbstractMap.SimpleEntry<String, String> queryParameter,
+            int timeout) throws IOException {
+        LOG.info("GetCalls:simpleGetCallTimeoutAware - IN");
+        HttpUrl.Builder urlBuilder = HttpUrl.parse(url).newBuilder();
+        urlBuilder.addQueryParameter(queryParameter.getKey(), queryParameter.getValue());
+        Request request = new Request.Builder().url(urlBuilder.build()).build();
+        Call call = OkHttpClientInstanceHolder.getUnsafeInstance(timeout).newCall(request);
+        Response res = call.execute();
+        String apiBodyResult = res.body().string();
+        int responseCode = res.code();
+        if (responseCode == HttpURLConnection.HTTP_OK) {
+            LOG.info("API call was successful. Response was:");
+            LOG.info(apiBodyResult);
+        } else {
+            LOG.info("API call was not successful. Response status code was: " + responseCode);
+        }
+        LOG.info("GetCalls:simpleGetCallTimeoutAware - OUT");
+    }
+
 }
