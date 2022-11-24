@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 import org.tharos.httplient.OkHttpClientInstanceHolder;
 
 import okhttp3.Call;
+import okhttp3.Callback;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -32,7 +33,6 @@ public class Get {
      * 
      * @param url            The request url
      * @param queryParameter The query parameter to be added to this request
-     * @return The response body of the input requested url
      * @throws IOException
      */
     public void simpleGetCall(String url, AbstractMap.SimpleEntry<String, String> queryParameter) throws IOException {
@@ -61,7 +61,6 @@ public class Get {
      * @param url            The request url
      * @param queryParameter The query parameter to be added to this request
      * @param timeout
-     * @return The response body of the input requested url
      * @throws IOException
      */
     public void simpleGetCallTimeoutAware(String url, AbstractMap.SimpleEntry<String, String> queryParameter,
@@ -95,7 +94,6 @@ public class Get {
      * @param url            The request url
      * @param queryParameter The query parameter to be added to this request
      * @param timeout
-     * @return The response body of the input requested url
      * @throws IOException
      */
     public void simpleUnsafeGetCallTimeoutAware(String url, AbstractMap.SimpleEntry<String, String> queryParameter,
@@ -114,6 +112,33 @@ public class Get {
         } else {
             LOG.info("API call was not successful. Response status code was: " + responseCode);
         }
+        LOG.info("GetCalls:simpleGetCallTimeoutAware - OUT");
+    }
+
+    /**
+     * Performs a simple asyncronous http GET call to the specified url.
+     * 
+     * @param url The request url
+     */
+    public void simpleAsyncGetCall(String url) {
+        LOG.info("GetCalls:simpleAsyncGetCall - IN");
+        Request getRequest = new Request.Builder()
+                .url(url)
+                .build();
+        Callback callback = new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                LOG.severe("GetCalls:simpleAsyncGetCall - onResponse threw an exception");
+                LOG.severe(e.getMessage());
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                LOG.info("GetCalls:simpleAsyncGetCall - onResponse returned:");
+                LOG.info(response.body().string());
+            }
+        };
+        OkHttpClientInstanceHolder.getSimpleInstance().newCall(getRequest).enqueue(callback);
         LOG.info("GetCalls:simpleGetCallTimeoutAware - OUT");
     }
 
