@@ -16,8 +16,7 @@ public class Delete {
     private static final Logger LOG = Logger.getLogger("put");
 
     /**
-     * Performs a simple http POST call to the specified url with the specified json
-     * payload
+     * Performs a simple http DELETE call to the specified url
      * 
      * @param url         The request url
      * @param jsonPayload The json payload posted by this request

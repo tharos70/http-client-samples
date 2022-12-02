@@ -17,7 +17,7 @@ public class Put {
     private static final Logger LOG = Logger.getLogger("put");
 
     /**
-     * Performs a simple http POST call to the specified url with the specified json
+     * Performs a simple http PUT call to the specified url with the specified json
      * payload
      * 
      * @param url         The request url
