@@ -36,7 +36,7 @@ public class Get {
      * @throws IOException
      */
     public void simpleGetCall(String url, AbstractMap.SimpleEntry<String, String> queryParameter) throws IOException {
-        LOG.info("GetCalls:simpleGetCall - IN");
+        LOG.info("Get:simpleGetCall - IN");
         HttpUrl.Builder urlBuilder = HttpUrl.parse(url).newBuilder();
         urlBuilder.addQueryParameter(queryParameter.getKey(), queryParameter.getValue());
         Request request = new Request.Builder().url(urlBuilder.build()).build();
@@ -50,7 +50,7 @@ public class Get {
         } else {
             LOG.info("API call was not successful. Response status code was: " + responseCode);
         }
-        LOG.info("GetCalls:simpleGetCall - OUT");
+        LOG.info("Get:simpleGetCall - OUT");
     }
 
     /**
@@ -65,7 +65,7 @@ public class Get {
      */
     public void simpleGetCallTimeoutAware(String url, AbstractMap.SimpleEntry<String, String> queryParameter,
             int timeout) throws IOException {
-        LOG.info("GetCalls:simpleGetCallTimeoutAware - IN");
+        LOG.info("Get:simpleGetCallTimeoutAware - IN");
         HttpUrl.Builder urlBuilder = HttpUrl.parse(url).newBuilder();
         urlBuilder.addQueryParameter(queryParameter.getKey(), queryParameter.getValue());
         Request request = new Request.Builder().url(urlBuilder.build()).build();
@@ -79,7 +79,7 @@ public class Get {
         } else {
             LOG.info("API call was not successful. Response status code was: " + responseCode);
         }
-        LOG.info("GetCalls:simpleGetCallTimeoutAware - OUT");
+        LOG.info("Get:simpleGetCallTimeoutAware - OUT");
     }
 
     /**
@@ -98,7 +98,7 @@ public class Get {
      */
     public void simpleUnsafeGetCallTimeoutAware(String url, AbstractMap.SimpleEntry<String, String> queryParameter,
             int timeout) throws IOException {
-        LOG.info("GetCalls:simpleGetCallTimeoutAware - IN");
+        LOG.info("Get:simpleGetCallTimeoutAware - IN");
         HttpUrl.Builder urlBuilder = HttpUrl.parse(url).newBuilder();
         urlBuilder.addQueryParameter(queryParameter.getKey(), queryParameter.getValue());
         Request request = new Request.Builder().url(urlBuilder.build()).build();
@@ -112,7 +112,7 @@ public class Get {
         } else {
             LOG.info("API call was not successful. Response status code was: " + responseCode);
         }
-        LOG.info("GetCalls:simpleGetCallTimeoutAware - OUT");
+        LOG.info("Get:simpleGetCallTimeoutAware - OUT");
     }
 
     /**
@@ -121,25 +121,25 @@ public class Get {
      * @param url The request url
      */
     public void simpleAsyncGetCall(String url) {
-        LOG.info("GetCalls:simpleAsyncGetCall - IN");
+        LOG.info("Get:simpleAsyncGetCall - IN");
         Request getRequest = new Request.Builder()
                 .url(url)
                 .build();
         Callback callback = new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                LOG.severe("GetCalls:simpleAsyncGetCall - onResponse threw an exception");
+                LOG.severe("Get:simpleAsyncGetCall - onResponse threw an exception");
                 LOG.severe(e.getMessage());
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                LOG.info("GetCalls:simpleAsyncGetCall - onResponse returned:");
+                LOG.info("Get:simpleAsyncGetCall - onResponse returned:");
                 LOG.info(response.body().string());
             }
         };
         OkHttpClientInstanceHolder.getSimpleInstance().newCall(getRequest).enqueue(callback);
-        LOG.info("GetCalls:simpleGetCallTimeoutAware - OUT");
+        LOG.info("Get:simpleGetCallTimeoutAware - OUT");
     }
 
 }
