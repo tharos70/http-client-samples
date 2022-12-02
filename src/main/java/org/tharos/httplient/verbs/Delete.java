@@ -9,7 +9,6 @@ import org.tharos.httplient.OkHttpClientInstanceHolder;
 import okhttp3.Call;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
-import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class Delete {
